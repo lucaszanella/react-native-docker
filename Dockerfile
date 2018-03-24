@@ -18,6 +18,7 @@ RUN curl -sL https://deb.nodesource.com/setup_6.x -o nodesource_setup.sh && \
 RUN apt-get update
 RUN apt-get install -t jessie-backports -y openjdk-8-jdk
 RUN apt-get install -y nodejs \
+                       sudo \
                        wget \
                        tar \
                        unzip \
