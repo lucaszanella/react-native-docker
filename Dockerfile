@@ -3,6 +3,8 @@ FROM debian:jessie
 ENV ANDROID_COMPILE_SDK "23"
 ENV ANDROID_BUILD_TOOLS "23.0.1"
 ENV ANDROID_SDK_TOOLS "24.4.1"
+#ENV SDK_LINK "https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip"
+#ENV SDK_HASH "444e22ce8ca0f67353bda4b85175ed3731cae3ffa695ca18119cbacef1c1bea0"
 
 ENV ANDROID_HOME=$PWD/android-sdk-linux
 ENV PATH=$PATH:$PWD/android-sdk-linux/platform-tools/
@@ -25,16 +27,18 @@ RUN apt-get install -y nodejs \
 
 RUN npm install -g react-native-cli yarn && npm cache clean -g
 
-RUN wget --quiet --output-document=android-sdk.tgz https://dl.google.com/android/android-sdk_r${ANDROID_SDK_TOOLS}-linux.tgz && \
+RUN wget --progress=bar:force:noscroll --output-document=android-sdk.tgz https://dl.google.com/android/android-sdk_r${ANDROID_SDK_TOOLS}-linux.tgz && \
+    echo sha256sum android-sdk.tgz && \
+    #echo "$SDK_HASH sdk.zip" | sha256sum --quiet --check || ( echo 'Corrupt or malicious download, aborting' ; exit 1 ) && \
     tar --extract --gzip --file=android-sdk.tgz && \
     rm android-sdk.tgz -fr
 
-RUN echo y | android-sdk-linux/tools/android --silent update sdk --no-ui --all --filter android-${ANDROID_COMPILE_SDK} && \
-          echo y | android-sdk-linux/tools/android --silent update sdk --no-ui --all --filter android-25 && \
-          echo y | android-sdk-linux/tools/android --silent update sdk --no-ui --all --filter platform-tools && \
-          echo y | android-sdk-linux/tools/android --silent update sdk --no-ui --all --filter build-tools-${ANDROID_BUILD_TOOLS} && \
-          echo y | android-sdk-linux/tools/android --silent update sdk --no-ui --all --filter build-tools-25.0.2 && \
-          echo y | android-sdk-linux/tools/android --silent update sdk --no-ui --all --filter build-tools-23.0.3 && \
-          echo y | android-sdk-linux/tools/android --silent update sdk --no-ui --all --filter extra-android-m2repository && \
-          echo y | android-sdk-linux/tools/android --silent update sdk --no-ui --all --filter extra-google-google_play_services && \
-          echo y | android-sdk-linux/tools/android --silent update sdk --no-ui --all --filter extra-google-m2repository
+RUN echo y | android-sdk-linux/tools/android update sdk --no-ui --all --filter android-${ANDROID_COMPILE_SDK} && \
+    echo y | android-sdk-linux/tools/android update sdk --no-ui --all --filter android-25 && \
+    echo y | android-sdk-linux/tools/android update sdk --no-ui --all --filter platform-tools && \
+    echo y | android-sdk-linux/tools/android update sdk --no-ui --all --filter build-tools-${ANDROID_BUILD_TOOLS} && \
+    echo y | android-sdk-linux/tools/android update sdk --no-ui --all --filter build-tools-25.0.2 && \
+    echo y | android-sdk-linux/tools/android update sdk --no-ui --all --filter build-tools-23.0.3 && \
+    echo y | android-sdk-linux/tools/android update sdk --no-ui --all --filter extra-android-m2repository && \
+    echo y | android-sdk-linux/tools/android update sdk --no-ui --all --filter extra-google-google_play_services && \
+    echo y | android-sdk-linux/tools/android update sdk --no-ui --all --filter extra-google-m2repository
