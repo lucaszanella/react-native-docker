@@ -29,7 +29,7 @@ RUN npm install -g react-native-cli yarn && npm cache clean -g
 
 RUN wget --progress=bar:force:noscroll --output-document=android-sdk.tgz https://dl.google.com/android/android-sdk_r${ANDROID_SDK_TOOLS}-linux.tgz && \
     echo sha256sum android-sdk.tgz && \
-    #echo "$SDK_HASH sdk.zip" | sha256sum --quiet --check || ( echo 'Corrupt or malicious download, aborting' ; exit 1 ) && \
+    #echo "$SDK_HASH android-sdk.tgz" | sha256sum --quiet --check || ( echo 'Corrupt or malicious download, aborting' ; exit 1 ) && \
     tar --extract --gzip --file=android-sdk.tgz && \
     rm android-sdk.tgz -fr
 
