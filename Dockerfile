@@ -45,7 +45,7 @@ RUN yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses && \
                                         "build-tools;23.0.1" \
                                         "build-tools;26.0.2" \
                                         "extras;android;m2repository" \
-                                        ""extras;google;m2repository" \
+                                        "extras;google;m2repository" \
                                         --verbose 
 
 ENV ANDROID_NDK $ANDROID_HOME/ndk-bundle
